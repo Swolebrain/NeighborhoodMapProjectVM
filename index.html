@@ -9,6 +9,11 @@
     </script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script type="text/javascript">
+      var xht = new XMLHttpRequest();
+      xht.open("GET", "https://en.wikipedia.org/w/api.php?action=query&titles=IBM&prop=revisions&rvprop=content" ,true);
+      xht.setRequestHeader({ 'Api-User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno vmoreno@columbushs.com',
+                      'Origin' : 'http://www.swolebrain.com'});
+      xht.send();
       $.ajax( {
           url: "https://en.wikipedia.org/w/api.php",
           data: "action=query&titles=IBM&prop=revisions&rvprop=content",
