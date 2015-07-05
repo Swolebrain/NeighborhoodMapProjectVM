@@ -9,33 +9,27 @@
     </script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script type="text/javascript">
-      /*$.ajax( {
+      $.ajax( {
           url: "https://en.wikipedia.org/w/api.php",
           data: "action=query&titles=IBM&prop=revisions&rvprop=content",
-          dataType: 'json',
+          dataType: 'jsonp',
           type: 'GET',
           headers: { 'Api-User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno vmoreno@columbushs.com',
                       'Origin' : 'http://www.swolebrain.com'},
           success: function(data) {
              // do something with data
              console.log(data);
-          },
-          error: function(err){
-            console.log(err);
           }
-      } );*/
+      } );
       $.ajax( {
           url: "http://api.yelp.com/v2/business/IBM",
           dataType: 'jsonp',
           type: 'GET',
-          crossDomain : true,
-          headers: { 'User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno http://www.swolebrain.com vmoreno@columbushs.com' },
+          //crossDomain : true,
+          //headers: { 'User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno http://www.swolebrain.com vmoreno@columbushs.com' },
           success: function(data) {
              // do something with data
              console.log(data);
-          },
-          error: function(err){
-            console.log(err);
           }
       } );
       function initialize() {
