@@ -14,7 +14,8 @@
           data: "action=query&titles=IBM&prop=revisions&rvprop=content",
           dataType: 'json',
           type: 'GET',
-          headers: { 'Api-User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno http://www.swolebrain.com vmoreno@columbushs.com' },
+          headers: { 'Api-User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno vmoreno@columbushs.com',
+                      'Origin' : 'http://www.swolebrain.com'},
           success: function(data) {
              // do something with data
              console.log(data);
