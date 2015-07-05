@@ -9,34 +9,22 @@
     </script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script type="text/javascript">
-      /*(var xht = new XMLHttpRequest();
-      xht.open("GET", "https://en.wikipedia.org/w/api.php?action=query&titles=IBM&prop=revisions&rvprop=content&format=jsonp" ,true);
-      xht.setRequestHeader( 'Api-User-Agent', 'Udacity Neighborhood Map Project for Victor Moreno vmoreno@columbushs.com');
-      xht.setRequestHeader( 'Origin', 'http://www.swolebrain.com');
-      xht.setRequestHeader('Content-Type', '' );
-      xht.send();*/
+      /* info about places service to get place info by id:
+      https://developers.google.com/maps/documentation/javascript/examples/place-details
+      */
       $.ajax( {
-          url: "https://en.wikipedia.org/w/api.php?action=query&titles=IBM&prop=revisions&rvprop=content",
+          //url: "https://en.wikipedia.org/w/api.php?action=query&titles=IBM&prop=revisions&rvprop=content&format=json&callback=wikiCalback",
+          url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exchars=175&titles=IBM&format=json&callback=wikiCalback",
           dataType: 'jsonp',
-          type: 'GET',
+          type: 'POST',
           headers: { 'Api-User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno vmoreno@columbushs.com',
                       'Origin' : 'http://www.swolebrain.com'},
           success: function(data) {
              // do something with data
-             console.log(data);
+             var propName = Object.getOwnPropertyNames(data.query.pages)[0];
+             console.log(data.query.pages[propName].extract);
           }
       } );
-      /*$.ajax( {
-          url: "http://api.yelp.com/v2/business/IBM",
-          dataType: 'jsonp',
-          type: 'GET',
-          //crossDomain : true,
-          //headers: { 'User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno http://www.swolebrain.com vmoreno@columbushs.com' },
-          success: function(data) {
-             // do something with data
-             console.log(data);
-          }
-      } );*/
       function initialize() {
         var mapOptions = {
           center: { lat: 30.25, lng: -97.7500},
