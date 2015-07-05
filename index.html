@@ -9,7 +9,7 @@
     </script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script type="text/javascript">
-      /*$.ajax( {
+      $.ajax( {
           url: "https://en.wikipedia.org/w/api.php",
           data: "action=query&titles=IBM&prop=revisions&rvprop=content",
           dataType: 'json',
@@ -22,12 +22,12 @@
           error: function(err){
             console.log(err);
           }
-      } );*/
-      $.ajax( {
+      } );
+      /*$.ajax( {
           url: "http://api.yelp.com/v2/business/IBM",
           dataType: 'json',
           type: 'GET',
-          headers: { 'user-agent': 'Udacity Neighborhood Map Project for Victor Moreno http://www.swolebrain.com vmoreno@columbushs.com' },
+          headers: { 'User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno http://www.swolebrain.com vmoreno@columbushs.com' },
           success: function(data) {
              // do something with data
              console.log(data);
@@ -35,7 +35,7 @@
           error: function(err){
             console.log(err);
           }
-      } );
+      } );*/
       function initialize() {
         var mapOptions = {
           center: { lat: 30.25, lng: -97.7500},
