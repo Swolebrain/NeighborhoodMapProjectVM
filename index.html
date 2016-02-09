@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style type="text/css">
-      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
-    </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB8aXIxv7p_aiShz7YI8ZZH0eo_fQ21Ns">
-    </script>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript">
       /* info about places service to get place info by id:
       https://developers.google.com/maps/documentation/javascript/examples/place-details
       */
+      /* SAMPLE CODE FOR WIKIPEDIA API
       $.ajax( {
           //url: "https://en.wikipedia.org/w/api.php?action=query&titles=IBM&prop=revisions&rvprop=content&format=json&callback=wikiCalback",
-          url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exchars=175&titles=IBM&format=json&callback=wikiCalback",
+          url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exchars=175&titles=IBM&format=json",
           dataType: 'jsonp',
-          type: 'POST',
+          type: 'GET',
           headers: { 'Api-User-Agent': 'Udacity Neighborhood Map Project for Victor Moreno vmoreno@columbushs.com',
                       'Origin' : 'http://www.swolebrain.com'},
           success: function(data) {
@@ -25,32 +21,28 @@
              console.log(data.query.pages[propName].extract);
           }
       } );
-      function initialize() {
-        var mapOptions = {
-          center: { lat: 30.25, lng: -97.7500},
-          zoom: 10
-        };
-        var map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
-        
-        var infowindow = new google.maps.InfoWindow({
-            content: "infowindow content string"
-        });
-        
-        var marker = new google.maps.Marker({
-          position: new google.maps.LatLng(30.397621, -97.719604),
-          map: map,
-          title: "IBM Research Lab"
-        });
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.open(map,marker);
-        });
-        
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
+      */
+      
     </script>
   </head>
   <body>
-<div id="map-canvas"></div>
+    <div class="row">
+      <div id="ui-box" class="col-xs-3">
+        <h4>Enter the name of your location:</h4>
+        <input type="text" id="name-filter">
+        <ul id="matches" data-bind="foreach: markers">
+          <li data-bind="text: title"></li>
+        </ul>
+      </div>
+      <div id="map-canvas" class="col-xs-9"></div>
+    </div>
+    
+    
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB8aXIxv7p_aiShz7YI8ZZH0eo_fQ21Ns">
+    </script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+    <script src="js/dist.js"></script>
   </body>
 </html>
