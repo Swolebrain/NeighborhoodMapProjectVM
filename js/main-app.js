@@ -1,21 +1,6 @@
 //global vars
 var viewModel, fakeDatabase, map;
 
-function getMarkers(str){
-  //this function could eventually get replaced with an interaction
-  //with a back end
-  var ret = [];
-  for (var x in fakeDatabase){
-    fakeDatabase[x].setMap(null);
-    if (fakeDatabase[x].title.indexOf(str) >= 0
-       || str.length === 0){
-      ret.push(fakeDatabase[x]);
-      fakeDatabase[x].setMap(map);
-    }
-  }
-  return ret;
-}
-
 function initialize() {
   var mapOptions = {
     center: { lat: 30.25, lng: -97.7500},
@@ -37,6 +22,8 @@ function initialize() {
     infowindow.open(map,marker1);
   });*/
   fakeDatabase = require("./markers.js")(map, google);
+  viewModel = new placesViewModel();
+  ko.applyBindings(viewModel);
 
 }
 google.maps.event.addDomListener(window, 'load', initialize);
@@ -54,7 +41,7 @@ $("#name-filter").on("change keydown keypress", function(){
 function placesViewModel(){
   var self = this;
   
-  self.markers = ko.observableArray([]);
+  self.markers = ko.observableArray(getMarkers(""));
   
   self.update = function(typedText){
     self.markers([]);
@@ -64,7 +51,20 @@ function placesViewModel(){
       markers[x].setMap(map);
     }
   }
-};
+  
+  function getMarkers(str){
+    //this function could eventually get replaced with an interaction
+    //with a back end
+    var ret = [];
+    for (var x in fakeDatabase){
+      fakeDatabase[x].setMap(null);
+      if (fakeDatabase[x].title.toLowerCase().indexOf(str.toLowerCase()) >= 0
+         || str.length === 0){
+        ret.push(fakeDatabase[x]);
+        fakeDatabase[x].setMap(map);
+      }
+    }
+    return ret;
+  }
+}
 
-viewModel = new placesViewModel();
-ko.applyBindings(viewModel);
