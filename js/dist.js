@@ -2,7 +2,7 @@
 //global vars
 var viewModel, fakeDatabase, map;
 
-function initialize() {
+initialize = function() {
   var mapOptions = {
     center: { lat: 30.25, lng: -97.7500},
     zoom: 8
@@ -25,9 +25,7 @@ function initialize() {
   fakeDatabase = require("./markers.js")(map, google);
   viewModel = new placesViewModel();
   ko.applyBindings(viewModel);
-
 }
-google.maps.event.addDomListener(window, 'load', initialize);
 
 
 //TEXT INPUT FILTERING
