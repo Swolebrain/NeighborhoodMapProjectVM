@@ -1,6 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 //global vars
-var viewModel, fakeDatabase, map;
+var fakeDatabase, map, viewModel;
 
 initialize = function() {
   var mapOptions = {
@@ -25,16 +25,8 @@ initialize = function() {
   fakeDatabase = require("./markers.js")(map, google);
   viewModel = new placesViewModel();
   ko.applyBindings(viewModel);
+  viewModel.query.subscribe(viewModel.update);
 }
-
-
-//TEXT INPUT FILTERING
-$("#name-filter").on("change keydown keypress", function(){
-  var typedText = $(this).val();
-  viewModel.update(typedText);
-});
-
-
 
 
 function placesViewModel(){
@@ -42,26 +34,31 @@ function placesViewModel(){
   
   self.markers = ko.observableArray(getMarkers(""));
   
+  self.query = ko.observable('');
+  
   self.update = function(typedText){
     self.markers([]);
     var markers = getMarkers(typedText);
     for (var x in markers){
       self.markers.push(markers[x]);
-      markers[x].setMap(map);
+      
     }
   }
+  
+  self.printMarkers = function(){ for(var x in self.markers)console.log(self.markers[x]);}
   
   function getMarkers(str){
     //this function could eventually get replaced with an interaction
     //with a back end
     var ret = [];
     for (var x in fakeDatabase){
-      fakeDatabase[x].setMap(null);
       if (fakeDatabase[x].title.toLowerCase().indexOf(str.toLowerCase()) >= 0
          || str.length === 0){
         ret.push(fakeDatabase[x]);
-        fakeDatabase[x].setMap(map);
+        fakeDatabase[x].setVisible(true);
       }
+      else
+        fakeDatabase[x].setVisible(false);
     }
     return ret;
   }

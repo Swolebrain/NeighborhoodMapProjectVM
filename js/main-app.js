@@ -1,5 +1,5 @@
 //global vars
-var viewModel, fakeDatabase, map;
+var fakeDatabase, map, viewModel;
 
 initialize = function() {
   var mapOptions = {
@@ -9,31 +9,11 @@ initialize = function() {
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
-  /*var infowindow = new google.maps.InfoWindow({
-      content: "infowindow content string"
-  });
-
-  var marker1 = new google.maps.Marker({
-    position: new google.maps.LatLng(30.397621, -97.719604),
-    map: map,
-    title: "IBM Research Lab"
-  });
-  google.maps.event.addListener(marker1, 'click', function() {
-    infowindow.open(map,marker1);
-  });*/
   fakeDatabase = require("./markers.js")(map, google);
   viewModel = new placesViewModel();
   ko.applyBindings(viewModel);
+  viewModel.query.subscribe(viewModel.update);
 }
-
-
-//TEXT INPUT FILTERING
-$("#name-filter").on("change keydown keypress", function(){
-  var typedText = $(this).val();
-  viewModel.update(typedText);
-});
-
-
 
 
 function placesViewModel(){
@@ -41,26 +21,31 @@ function placesViewModel(){
   
   self.markers = ko.observableArray(getMarkers(""));
   
+  self.query = ko.observable('');
+  
   self.update = function(typedText){
     self.markers([]);
     var markers = getMarkers(typedText);
     for (var x in markers){
       self.markers.push(markers[x]);
-      markers[x].setMap(map);
+      
     }
   }
+  
+  self.printMarkers = function(){ for(var x in self.markers)console.log(self.markers[x]);}
   
   function getMarkers(str){
     //this function could eventually get replaced with an interaction
     //with a back end
     var ret = [];
     for (var x in fakeDatabase){
-      fakeDatabase[x].setMap(null);
       if (fakeDatabase[x].title.toLowerCase().indexOf(str.toLowerCase()) >= 0
          || str.length === 0){
         ret.push(fakeDatabase[x]);
-        fakeDatabase[x].setMap(map);
+        fakeDatabase[x].setVisible(true);
       }
+      else
+        fakeDatabase[x].setVisible(false);
     }
     return ret;
   }

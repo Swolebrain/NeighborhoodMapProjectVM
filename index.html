@@ -29,7 +29,7 @@
     <div class="row">
       <div id="ui-box" class="col-xs-3">
         <h4>Enter the name of your location:</h4>
-        <input type="text" id="name-filter">
+        <input type="search" id="name-filter" data-bind="value: query, valueUpdate: 'keyup'">
         <ul id="matches" data-bind="foreach: markers">
           <li data-bind="text: title"></li>
         </ul>
@@ -43,7 +43,7 @@
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
     <script src="js/dist.js"></script>
-    <script type="text/javascript"
+    <script async type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDB8aXIxv7p_aiShz7YI8ZZH0eo_fQ21Ns&callback=initialize">
     </script>
   </body>
