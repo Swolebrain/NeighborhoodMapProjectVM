@@ -33,6 +33,7 @@ function placesViewModel(){
     }
   }
   
+  //function to make map markers bounce
   self.toggleBounce = function(marker){
     if (marker.getAnimation() !== null) {
       marker.setAnimation(null);
@@ -42,7 +43,10 @@ function placesViewModel(){
     //setTimeout(toggleBounce, 1000);
   }
   
+  
+  //debug function to print map markers
   self.printMarkers = function(){ for(var x in self.markers)console.log(self.markers[x]);}
+  
   
   function getMarkers(str){
     //this function could eventually get replaced with an interaction
