@@ -10,18 +10,6 @@ initialize = function() {
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
-  /*var infowindow = new google.maps.InfoWindow({
-      content: "infowindow content string"
-  });
-
-  var marker1 = new google.maps.Marker({
-    position: new google.maps.LatLng(30.397621, -97.719604),
-    map: map,
-    title: "IBM Research Lab"
-  });
-  google.maps.event.addListener(marker1, 'click', function() {
-    infowindow.open(map,marker1);
-  });*/
   fakeDatabase = require("./markers.js")(map, google);
   viewModel = new placesViewModel();
   ko.applyBindings(viewModel);
