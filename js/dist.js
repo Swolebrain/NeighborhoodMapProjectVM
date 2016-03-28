@@ -1,6 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 //global vars:
-var fakeDatabase, map, viewModel;
+var fakeDatabase, map, viewModel,
+    url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDB8aXIxv7p_aiShz7YI8ZZH0eo_fQ21Ns"; //&callback=initialize";
 //This is the helper function that toggles infowindows as well as 
 //the bouncing animation. It is passed to the module that creates and loads the 
 //map markers, and used in this script as well
@@ -15,12 +16,17 @@ function markerEvent(marker){
     marker.setAnimation(google.maps.Animation.BOUNCE);
     setTimeout(function(){
       marker.setAnimation(null);
-    }, 2000);
+    }, 2200);
   }
 }
 
+$.getScript(url).done(initialize).fail(errorCallback);
 
-initialize = function() {
+function errorCallback(){
+  alert("Failed to contact Google maps API. Please try refreshing the page");
+}
+
+function initialize() {
   var mapOptions = {
     center: { lat: 30.25, lng: -97.7500},
     zoom: 8

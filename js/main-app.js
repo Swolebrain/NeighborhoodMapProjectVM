@@ -1,5 +1,6 @@
 //global vars:
-var fakeDatabase, map, viewModel;
+var fakeDatabase, map, viewModel,
+    url = "https://maps.googleapis.com/maps/api/js?key=AIzaSyDB8aXIxv7p_aiShz7YI8ZZH0eo_fQ21Ns"; //&callback=initialize";
 //This is the helper function that toggles infowindows as well as 
 //the bouncing animation. It is passed to the module that creates and loads the 
 //map markers, and used in this script as well
@@ -18,8 +19,13 @@ function markerEvent(marker){
   }
 }
 
+$.getScript(url).done(initialize).fail(errorCallback);
 
-initialize = function() {
+function errorCallback(){
+  alert("Failed to contact Google maps API. Please try refreshing the page");
+}
+
+function initialize() {
   var mapOptions = {
     center: { lat: 30.25, lng: -97.7500},
     zoom: 8
