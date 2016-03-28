@@ -29,7 +29,10 @@ module.exports = function(map, google){
   
   //instantiate map markers
   var markers = markerData.map(function(e){
-    return new google.maps.Marker(e);  
+    var ret = new google.maps.Marker(e);  
+    ret.setAnimation(google.maps.Animation.BOUNCE);
+    ret.setAnimation(null);
+    return ret;
   });
   
   markers.forEach(function(e,i){

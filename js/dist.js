@@ -33,6 +33,15 @@ function placesViewModel(){
     }
   }
   
+  self.toggleBounce = function(marker){
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+    } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+    //setTimeout(toggleBounce, 1000);
+  }
+  
   self.printMarkers = function(){ for(var x in self.markers)console.log(self.markers[x]);}
   
   function getMarkers(str){
@@ -85,7 +94,10 @@ module.exports = function(map, google){
   
   //instantiate map markers
   var markers = markerData.map(function(e){
-    return new google.maps.Marker(e);  
+    var ret = new google.maps.Marker(e);  
+    ret.setAnimation(google.maps.Animation.BOUNCE);
+    ret.setAnimation(null);
+    return ret;
   });
   
   markers.forEach(function(e,i){
