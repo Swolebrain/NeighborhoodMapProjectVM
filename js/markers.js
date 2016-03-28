@@ -1,4 +1,18 @@
-module.exports = function(map, google){
+module.exports = function(map, google, markerEvent){
+  google.maps.InfoWindow.prototype._open = google.maps.InfoWindow.prototype.open;
+  google.maps.InfoWindow.prototype._close = google.maps.InfoWindow.prototype.close;
+  google.maps.InfoWindow.prototype._openedState = false;
+
+  google.maps.InfoWindow.prototype.open = function (map, anchor) {
+      this._openedState = true;
+      this._open(map, anchor);
+  };
+
+  google.maps.InfoWindow.prototype.close = function () {
+      this._openedState = false;
+      this._close();
+  };
+  
   //labels for map markers:
   var infoWindowStrings = [
     "IBM research center",
@@ -28,16 +42,19 @@ module.exports = function(map, google){
   });
   
   //instantiate map markers
-  var markers = markerData.map(function(e){
+  var markers = markerData.map(function(e, i){
     var ret = new google.maps.Marker(e);  
     ret.setAnimation(google.maps.Animation.BOUNCE);
     ret.setAnimation(null);
+    ret.infoWindow = infoWindows[i];
     return ret;
   });
   
   markers.forEach(function(e,i){
     //add event listener to each Marker object
-    google.maps.event.addListener(e, 'click', () => infoWindows[i].open(map, e));
+    google.maps.event.addListener(e, 'click', function(){
+      markerEvent(e);
+    });
   });
   return markers;
 };

@@ -1,6 +1,24 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-//global vars
+//global vars:
 var fakeDatabase, map, viewModel;
+//This is the helper function that toggles infowindows as well as 
+//the bouncing animation. It is passed to the module that creates and loads the 
+//map markers, and used in this script as well
+function markerEvent(marker){
+  if (!marker._openedState)
+    marker.infoWindow.open(map, marker);
+  else
+    marker.close();
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){
+      marker.setAnimation(null);
+    }, 2000);
+  }
+}
+
 
 initialize = function() {
   var mapOptions = {
@@ -10,7 +28,7 @@ initialize = function() {
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
-  fakeDatabase = require("./markers.js")(map, google);
+  fakeDatabase = require("./markers.js")(map, google, markerEvent);
   viewModel = new placesViewModel();
   ko.applyBindings(viewModel);
   viewModel.query.subscribe(viewModel.update);
@@ -34,14 +52,7 @@ function placesViewModel(){
   }
   
   //function to make map markers bounce
-  self.toggleBounce = function(marker){
-    if (marker.getAnimation() !== null) {
-      marker.setAnimation(null);
-    } else {
-      marker.setAnimation(google.maps.Animation.BOUNCE);
-    }
-    //setTimeout(toggleBounce, 1000);
-  }
+  self.toggleBounce = markerEvent;
   
   
   //debug function to print map markers
@@ -67,7 +78,21 @@ function placesViewModel(){
 
 
 },{"./markers.js":2}],2:[function(require,module,exports){
-module.exports = function(map, google){
+module.exports = function(map, google, markerEvent){
+  google.maps.InfoWindow.prototype._open = google.maps.InfoWindow.prototype.open;
+  google.maps.InfoWindow.prototype._close = google.maps.InfoWindow.prototype.close;
+  google.maps.InfoWindow.prototype._openedState = false;
+
+  google.maps.InfoWindow.prototype.open = function (map, anchor) {
+      this._openedState = true;
+      this._open(map, anchor);
+  };
+
+  google.maps.InfoWindow.prototype.close = function () {
+      this._openedState = false;
+      this._close();
+  };
+  
   //labels for map markers:
   var infoWindowStrings = [
     "IBM research center",
@@ -97,16 +122,19 @@ module.exports = function(map, google){
   });
   
   //instantiate map markers
-  var markers = markerData.map(function(e){
+  var markers = markerData.map(function(e, i){
     var ret = new google.maps.Marker(e);  
     ret.setAnimation(google.maps.Animation.BOUNCE);
     ret.setAnimation(null);
+    ret.infoWindow = infoWindows[i];
     return ret;
   });
   
   markers.forEach(function(e,i){
     //add event listener to each Marker object
-    google.maps.event.addListener(e, 'click', () => infoWindows[i].open(map, e));
+    google.maps.event.addListener(e, 'click', function(){
+      markerEvent(e);
+    });
   });
   return markers;
 };
