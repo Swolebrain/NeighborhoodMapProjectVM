@@ -1,0 +1,32 @@
+{
+  "name": "neighborhoodmapprojectvm",
+  "version": "1.0.0",
+  "description": "Neighborhood Map Project for Udacity",
+  "main": "dist.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "watchify": "^3.7.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watchify js/main-app.js -o dist.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Swolebrain/NeighborhoodMapProjectVM.git"
+  },
+  "keywords": [
+    "Google",
+    "Maps",
+    "Api",
+    "pixabay",
+    "api"
+  ],
+  "author": "Victor Moreno",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Swolebrain/NeighborhoodMapProjectVM/issues"
+  },
+  "homepage": "https://github.com/Swolebrain/NeighborhoodMapProjectVM#readme"
+}
