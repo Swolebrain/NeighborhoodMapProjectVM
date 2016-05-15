@@ -29,14 +29,15 @@ module.exports = function(map, google, markerEvent){
 
   //create positions for map markers
   var markerData = [
-    {position: new google.maps.LatLng(30.397621, -97.719604)},
-    {position: new google.maps.LatLng(30.797621, -97.619604)},
-    {position: new google.maps.LatLng(30.197621, -97.819604)},
-    {position: new google.maps.LatLng(29.897621, -97.419604)},
-    {position: new google.maps.LatLng(29.597621, -97.919604)}
+    {position: new google.maps.LatLng(30.397621, -97.719604), searchStr: "IBM"},
+    {position: new google.maps.LatLng(30.797621, -97.619604), searchStr: "Barbell"},
+    {position: new google.maps.LatLng(30.197621, -97.819604), searchStr: "peter+pan"},
+    {position: new google.maps.LatLng(29.897621, -97.419604), searchStr: "unicorn"},
+    {position: new google.maps.LatLng(29.597621, -97.919604), searchStr: "machine+gun"}
   ];
 
-  markerData.forEach(function(e, i){ //fill in the rest of the data required to instantiate map markers
+  markerData.forEach(function(e, i){
+    //fill in the rest of the data required to instantiate map markers
     e.map = map;
     e.title = infoWindowStrings[i];
   });
@@ -47,14 +48,18 @@ module.exports = function(map, google, markerEvent){
     ret.setAnimation(google.maps.Animation.BOUNCE);
     ret.setAnimation(null);
     ret.infoWindow = infoWindows[i];
+
+    //variable to show whether a given marker has
+    //already loaded its thumbnail from pixabay or not
+    ret.hasThumbnail = false;
+
+    //add event listener to each Marker object
+    google.maps.event.addListener(ret, 'click', function(){
+      markerEvent(ret);
+    });
+
     return ret;
   });
 
-  markers.forEach(function(e,i){
-    //add event listener to each Marker object
-    google.maps.event.addListener(e, 'click', function(){
-      markerEvent(e);
-    });
-  });
   return markers;
 };
