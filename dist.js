@@ -32,10 +32,12 @@ function initialize() {
 //the bouncing animation. It is passed to the module that creates and loads the
 //map markers, and used in this script as well
 function markerEventHandler(marker){
-  if (!marker._openedState)
+  //handle marker openinig/closing:
+  if (!marker._openedState && marker.hasThumbnail)
     marker.infoWindow.open(map, marker);
-  else
+  else if (marker._openedState)
     marker.close();
+  //handle marker animation toggling:
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
   } else {
@@ -44,6 +46,23 @@ function markerEventHandler(marker){
       marker.setAnimation(null);
     }, 2200);
   }
+  //code to load images
+  if (!marker.hasThumbnail)
+    loadImage(marker);
+}
+//This function loads the image thumbnails for a given map marker
+function loadImage(marker){
+  var url = `https://pixabay.com/api/?key=2574254-068da214e2b7a749e028d4884&q=${marker.searchStr}&image_type=photo`;
+  $.get(url, (resp, txt, xhr) => {
+    console.log("This fired. Infowindow: ");
+    console.log(marker.infoWindow);
+    let imgIdx = Math.floor(Math.random()*resp.hits.length);
+    newContent = marker.infoWindow.content+`<br><img src="${resp.hits[imgIdx].previewURL}" border="0" align="left" width="100px" height="auto">`;
+    marker.infoWindow = new google.maps.InfoWindow({content: newContent});
+    //marker.infoWindow.content+=`<br><img src="${resp.hits[imgIdx].previewURL}" border="0" align="left" width="100px" height="auto">`;
+    marker.hasThumbnail = true;
+    marker.infoWindow.open(map, marker);
+  });
 }
 
 },{"./markers.js":2,"./placesViewModel.js":3}],2:[function(require,module,exports){
