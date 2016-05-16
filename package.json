@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "watchify src/main-app.js -o dist/dist.js"
+    "watch": "watchify src/main-app.js -o dist/dist.js -dv"
   },
   "repository": {
     "type": "git",
