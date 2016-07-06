@@ -11,7 +11,7 @@
         <h4>Enter the name of your location:</h4>
         <input type="search" id="name-filter" data-bind="value: query, valueUpdate: 'keyup'">
         <ul id="matches" data-bind="foreach: markers">
-          <li data-bind="text: title, click: $parent.toggleBounce" ></li>
+          <li data-bind="text: title, click: $parent.clickEvent" ></li>
         </ul>
       </div>
       <div id="map-canvas" class="col-xs-12 col-md-9"></div>

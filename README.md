@@ -38,3 +38,4 @@ If you can find a use for it, go for it. MIT license.
 14. Removed extraneous empty script from header in index.html
 15. Beautified CSS to keep its spacing consistent
 16. Made it so that inputting a search query hides all infowindows and stops all animations
+17. Refactored a lot of the code so that 

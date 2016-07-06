@@ -1,4 +1,4 @@
-module.exports = function (markerEventHandler, fakeDatabase){
+module.exports = function (fakeDatabase){
 
   return function(){
     var self = this;
@@ -14,8 +14,10 @@ module.exports = function (markerEventHandler, fakeDatabase){
       }
     }
 
-    //function to make map markers bounce
-    self.toggleBounce = markerEventHandler;
+    //function to open infowindow and make mapmarker bounce:
+    self.clickEvent = function(marker){
+      marker.clickHandler();
+    };
 
     //debug function to print map markers
     self.printMarkers = function(){ for(var x in self.markers)console.log(self.markers[x]);}

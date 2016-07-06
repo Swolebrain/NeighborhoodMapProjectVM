@@ -1,22 +1,4 @@
-module.exports = function(map, google, markerEvent){
-  /*
-    The purpose of this code is for the Google Maps infowindow object to keep an instance variable
-    named _openedState that is true whenever the infow window is open and false otherwise. I use this
-    in the viewmodel to
-
-  google.maps.InfoWindow.prototype._open = google.maps.InfoWindow.prototype.open;
-  google.maps.InfoWindow.prototype._close = google.maps.InfoWindow.prototype.close;
-  google.maps.InfoWindow.prototype._openedState = false;
-
-  google.maps.InfoWindow.prototype.open = function (map, anchor) {
-      this._openedState = true;
-      this._open(map, anchor);
-  };
-
-  google.maps.InfoWindow.prototype.close = function () {
-      this._openedState = false;
-      this._close();
-  };*/
+module.exports = function(map, google){
 
   //labels for map markers:
   var infoWindowStrings = [
@@ -54,12 +36,51 @@ module.exports = function(map, google, markerEvent){
     ret.hasThumbnail = false;
 
     //add event listener to each Marker object
-    google.maps.event.addListener(ret, 'click', function(){
-      markerEvent(ret);
-    });
+    ret.clickHandler = function(){
+      markerEventHandler(ret);
+    };
+    google.maps.event.addListener(ret, 'click', ret.clickHandler);
 
     return ret;
   });
 
   return markers;
+
+
+  //This is the helper function that toggles infowindows as well as
+  //the bouncing animation. It is passed to the module that creates and loads the
+  //map markers, and used in this script as well
+  function markerEventHandler(marker){
+    //close all open markers, cancel animations:
+    markers.map((e)=> { e.infoWindow.close(); e.setAnimation(null);});
+    //handle marker openinig:
+    marker.infoWindow.open(map, marker);
+    //pan to the marker and zoom in:
+    map.setZoom(10);
+    map.panTo(marker.getPosition());
+
+    //set the animation and make sure it stops in a little bit
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){
+      marker.setAnimation(null);
+    }, 2100);
+
+    //load the image if it hasnt been loaded already
+    if (!marker.hasThumbnail)
+      loadImage(marker);
+  }
+  //This function loads the image thumbnails for a given map marker
+  function loadImage(marker){
+    //The following is an ES6 template string, it is not the wrong quote character. Template strings are more legible
+    var url = `https://pixabay.com/api/?key=2574254-068da214e2b7a749e028d4884&q=${marker.searchStr}&image_type=photo`;
+    $.get(url, (resp, txt, xhr) => {
+      var imgIdx = Math.floor(Math.random()*resp.hits.length);
+      //another es6 template string:
+      var newContent = marker.infoWindow.content+`<br><img src="${resp.hits[imgIdx].previewURL}" border="0" align="left" width="100px" height="auto">`;
+      marker.infoWindow.setContent(newContent);
+      marker.hasThumbnail = true;
+    }).fail(function(err){ //error handling for pixabay ajax call
+      alert("Failed loading image from pixabay! Please contact the site admin.")
+    });
+  }
 };
