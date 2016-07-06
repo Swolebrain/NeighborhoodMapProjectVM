@@ -2,7 +2,7 @@ module.exports = function (markerEventHandler, fakeDatabase){
 
   return function(){
     var self = this;
-    self.markers = ko.observableArray(getMarkers(""));
+    self.markers = ko.observableArray(getMarkers(''));
     self.query = ko.observable('');
 
     self.update = function(typedText){

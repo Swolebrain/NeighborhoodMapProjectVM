@@ -1,4 +1,9 @@
 module.exports = function(map, google, markerEvent){
+  /*
+    The purpose of this code is for the Google Maps infowindow object to keep an instance variable
+    named _openedState that is true whenever the infow window is open and false otherwise. I use this
+    in the viewmodel to
+
   google.maps.InfoWindow.prototype._open = google.maps.InfoWindow.prototype.open;
   google.maps.InfoWindow.prototype._close = google.maps.InfoWindow.prototype.close;
   google.maps.InfoWindow.prototype._openedState = false;
@@ -11,7 +16,7 @@ module.exports = function(map, google, markerEvent){
   google.maps.InfoWindow.prototype.close = function () {
       this._openedState = false;
       this._close();
-  };
+  };*/
 
   //labels for map markers:
   var infoWindowStrings = [
@@ -21,11 +26,6 @@ module.exports = function(map, google, markerEvent){
     "Unicorns and Pickup Trucks",
     "Machine Gun Store"
   ];
-
-  //use labels to make an array of infoWindow objects
-  var infoWindows = infoWindowStrings.map(function(e){
-    return new google.maps.InfoWindow({content: e});
-  });
 
   //create positions for map markers
   var markerData = [
@@ -47,7 +47,7 @@ module.exports = function(map, google, markerEvent){
     var ret = new google.maps.Marker(e);
     ret.setAnimation(google.maps.Animation.BOUNCE);
     ret.setAnimation(null);
-    ret.infoWindow = infoWindows[i];
+    ret.infoWindow = new google.maps.InfoWindow({content: infoWindowStrings[i]});
 
     //variable to show whether a given marker has
     //already loaded its thumbnail from pixabay or not

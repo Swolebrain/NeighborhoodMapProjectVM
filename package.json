@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "description": "Neighborhood Map Project for Udacity",
   "main": "dist.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "strictify": "^0.2.0",
     "watchify": "^3.7.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "watchify src/main-app.js -o dist/dist.js -dv"
+    "watch": "watchify -t strictify src/main-app.js -o dist/dist.js -dv"
   },
   "repository": {
     "type": "git",

@@ -1,11 +1,15 @@
-input{
+input {
   width:90%;
   margin: 0 auto;
 }
 
-html, body, #map-canvas, .row { margin: 0; padding: 0; height: 100%; font-size: 1rem;}
-
-li{
-  padding: 0.7rem 0 0 0;
+html, body, #map-canvas, .row {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 1rem;
 }
 
+li {
+  padding: 0.7rem 0 0 0;
+}
