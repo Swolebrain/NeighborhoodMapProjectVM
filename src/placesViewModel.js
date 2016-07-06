@@ -26,6 +26,8 @@ module.exports = function (markerEventHandler, fakeDatabase){
       //with a back end
       var ret = [];
       for (var x in fakeDatabase){
+        fakeDatabase[x].infoWindow.close();
+        fakeDatabase[x].setAnimation(null);
         if (fakeDatabase[x].title.toLowerCase().indexOf(str.toLowerCase()) >= 0
            || str.length === 0){
           ret.push(fakeDatabase[x]);

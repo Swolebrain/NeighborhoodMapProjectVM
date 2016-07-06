@@ -37,3 +37,4 @@ If you can find a use for it, go for it. MIT license.
 13. Changed all the strings I saw to use single quotes other than the big complex template strings which are still using ES6 format with back ticks
 14. Removed extraneous empty script from header in index.html
 15. Beautified CSS to keep its spacing consistent
+16. Made it so that inputting a search query hides all infowindows and stops all animations
